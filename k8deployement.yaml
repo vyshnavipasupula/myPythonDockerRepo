@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vyshnavi-deploy
+  labels:
+    app: vyshnavi-mvn-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vyshnavi-mvn-app
+  template:
+    metadata:
+      labels:
+        app: vyshnavi-mvn-app
+    spec:
+      containers:
+      - name: vyshnavi-mvn-container
+        image: vyshnavipasapula/myapp1:v1.0
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vyshnavi-np-service
+  labels:
+    app: vyshnavi-mvn-app
+spec:
+  selector:
+    app: vyshnavi-mvn-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31000
+    port: 8080
+    targetPort: 8080
